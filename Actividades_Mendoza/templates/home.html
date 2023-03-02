@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Provincia de Mendoza</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+  </head>
+  <body>
+
+
+    <div class="container-fluid bg-dark">
+      
+      <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-8">
+          <h1 class="titulo-pagina">Actividades de la Provincia de Mendoza</h1>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <h2 class="titulo-filtros">Filtros</h2>
+      </div>
+      <div class="row justify-content-end">
+        <div class="col-sm-12 col-md-6 col-lg-4">
+          <div class="form-group">
+            <label for="municipalidad">Municipalidad</label>
+            <select class="form-control" id="filtro_select_municipalidad" onchange="descarga_actividades_provincia_mendoza()" >
+              <option>Todas</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4">
+          <div class="form-group">
+            <label for="categoria">Categoria</label>
+            <select class="form-control" id="filtro_select_categoria" onchange="descarga_actividades_provincia_mendoza()">
+              <option>Todas</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row justify-content-center">
+        
+        <div id="div_actividad_mendoza" class="col-sm-6 col-md-4 col-lg-3" hidden>
+          <div class="card my-4 text-white bg-dark">
+            
+            <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+            
+            <div class="card-body">
+              <h5 id="Titulo_nota" class="card-title">Titulo de la noticia</h5>
+              <h6 id="Subtitulo_nota" class="card-subtitle mb-2 text-muted">Subtitulo de la noticia</h6>
+              <p id="categorias" class="card-text">Categoria de la noticia</p>
+              <p id="municipio_localidad" class="card-text">Municipio Localidad de la noticia</p>
+              <p id="creacion" class="card-text">Fecha de la noticia</p>
+              <a id="link_nota_original" href="https://google.com" class="btn btn-primary">Leer mas</a>
+
+            </div>
+          </div>
+        </div>
+      
+      </div>
+
+    </div>
+
+    <nav class="pagination justify-content-center">
+      <ul class="pagination-list">
+        <li class="pagination-item">
+          <button class="pagination-link" onclick="descarga_actividades_provincia_mendoza()"> 0 </button>
+        </li>
+        <li class="pagination-item">
+          <button class="pagination-link" onclick="descarga_actividades_provincia_mendoza()"> 1 </button>
+        </li>
+        <li class="pagination-item">
+          <a class="pagination-link" onclick="descarga_actividades_provincia_mendoza()" >2</a>
+        </li>
+        <li class="pagination-item">
+          <a class="pagination-link">3</a>
+        </li>
+        <li class="pagination-item">
+          <a class="pagination-link">4</a>
+        </li>
+      </ul>
+    </nav>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="{% static 'js/home.js' %}"></script>
+    <script>
+      
+      var CSRF_TOKEN = '{{ csrf_token }}'
+      var url_api_actividades_provincia_mendoza = "{% url 'api_actividades_provincia_mendoza' %}"
+      var lista_divs_historial = []
+      var primera_carga = false
+
+    </script>
+  </body>
+</html>
