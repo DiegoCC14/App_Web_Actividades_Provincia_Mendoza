@@ -1,5 +1,6 @@
 from pathlib import Path
-import json
+import json , csv
+from datetime import datetime
 
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -13,12 +14,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 class Actividades_Provincial_Mendoza( View ):
 	
 	def get( self , request ):
+		
+		#Guardamos dato de que el usuario ingreso --------->>>>
+		if request.user.is_superuser == False:
+			with open('logs_user.csv', mode='r') as archivo_csv:
+				csv_reader = csv.DictReader(archivo_csv)
+				nueva_fila = {'user': 'user_anonimo', 'acceso': datetime.now()}
+				filas = [nueva_fila] + [fila for fila in csv_reader]
+			with open('logs_user.csv', mode='w', newline='') as archivo_csv:
+				csv_writer = csv.DictWriter(archivo_csv, fieldnames=['user', 'acceso'])
+				csv_writer.writeheader()
+				csv_writer.writerows(filas)
+		#================
+
 		return render( request , 'home.html' )
 
 
 class API_Actividades_Provincia_Mendoza( View ):
 
 	def post( self , request ):
+
 		lista_actividades = []
 		data_request = request.POST.dict()
 		
@@ -31,8 +46,6 @@ class API_Actividades_Provincia_Mendoza( View ):
 		#================
 
 		#Dependiendo de los filtros agregados la consulta cambiara
-		print(f"Filtro Municipalidad: {data_request['filtro_municipalidad']}")
-		print(f"Filtro Categoria: {data_request['filtro_categoria']}")
 		if data_request['filtro_municipalidad'] == "-1": #-1 es Todas
 			list_object_actividades = Actividades.objects.all().order_by('-creacion')
 		else:
@@ -41,7 +54,9 @@ class API_Actividades_Provincia_Mendoza( View ):
 		if data_request['filtro_categoria'] != "-1": #-1 es Todas
 			lista_obj_actividad_categoria = Categoria_de_Actividad.objects.filter( id_categoria=data_request['filtro_categoria'] )
 			list_object_actividades = list_object_actividades.filter( id__in=[ obj_act_categorita.id_actividad.id for obj_act_categorita in lista_obj_actividad_categoria] ).order_by('-creacion')
-		
+		#==============>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+		# Solo nos traemos los primero n elementos
 		list_object_actividades = list_object_actividades[ int(data_request["actividad_inicial"]): int(data_request["actividad_final"]) ]
 		#==============>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
