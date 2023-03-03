@@ -20,10 +20,10 @@
         </div>
       </div>
 
-      <div class="col-sm-12">
-        <h2 class="titulo-filtros">Filtros</h2>
-      </div>
       <div class="row justify-content-end">
+        <div class="col-sm-12">
+          <h5 class="titulo-filtros">Filtros</h5>
+        </div>
         <div class="col-sm-12 col-md-6 col-lg-4">
           <div class="form-group">
             <label for="municipalidad">Municipalidad</label>
@@ -40,15 +40,43 @@
             </select>
           </div>
         </div>
+
       </div>
 
+      <div class="row">
+        <div class="col">
+          <h5 id="numero_pagina_actual" class="titulo-filtros">Pagina: 0</h5>
+        </div>
+        <div class="col-auto ml-auto">
+          <nav class="pagination justify-content-end">
+            <ul class="pagination-list">
+              <li class="pagination-item">
+                <button class="pagination-link" onclick="cambiando_de_numero_pagina(0)">0</button>
+              </li>
+              <li class="pagination-item">
+                <button class="pagination-link" onclick="cambiando_de_numero_pagina(1)">1</button>
+              </li>
+              <li class="pagination-item">
+                <button class="pagination-link" onclick="cambiando_de_numero_pagina(2)">2</button>
+              </li>
+              <li class="pagination-item">
+                <button class="pagination-link" onclick="cambiando_de_numero_pagina(3)">3</button>
+              </li>
+              <li class="pagination-item">
+                <button class="pagination-link" onclick="cambiando_de_numero_pagina(4)">4</button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
 
       <div class="row justify-content-center">
         
         <div id="div_actividad_mendoza" class="col-sm-6 col-md-4 col-lg-3" hidden>
           <div class="card my-4 text-white bg-dark">
-            
-            <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+            <a id="link_nota_original">
+              <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+            </a>
             
             <div class="card-body">
               <h5 id="Titulo_nota" class="card-title">Titulo de la noticia</h5>
@@ -56,6 +84,7 @@
               <p id="categorias" class="card-text">Categoria de la noticia</p>
               <p id="municipio_localidad" class="card-text">Municipio Localidad de la noticia</p>
               <p id="creacion" class="card-text">Fecha de la noticia</p>
+
               <a id="link_nota_original" href="https://google.com" class="btn btn-primary">Leer mas</a>
 
             </div>
@@ -69,19 +98,19 @@
     <nav class="pagination justify-content-center">
       <ul class="pagination-list">
         <li class="pagination-item">
-          <button class="pagination-link" onclick="descarga_actividades_provincia_mendoza()"> 0 </button>
+          <button class="pagination-link" onclick="cambiando_de_numero_pagina( 0 )">0</button>
         </li>
         <li class="pagination-item">
-          <button class="pagination-link" onclick="descarga_actividades_provincia_mendoza()"> 1 </button>
+          <button class="pagination-link" onclick="cambiando_de_numero_pagina( 1 )">1</button>
         </li>
         <li class="pagination-item">
-          <a class="pagination-link" onclick="descarga_actividades_provincia_mendoza()" >2</a>
+          <button class="pagination-link" onclick="cambiando_de_numero_pagina( 2 )">2</button>
         </li>
         <li class="pagination-item">
-          <a class="pagination-link">3</a>
+          <button class="pagination-link" onclick="cambiando_de_numero_pagina( 3 )">3</button>
         </li>
         <li class="pagination-item">
-          <a class="pagination-link">4</a>
+          <button class="pagination-link" onclick="cambiando_de_numero_pagina( 4 )">4</button>
         </li>
       </ul>
     </nav>
@@ -95,7 +124,7 @@
       var url_api_actividades_provincia_mendoza = "{% url 'api_actividades_provincia_mendoza' %}"
       var lista_divs_historial = []
       var primera_carga = false
-
+      var pagina_actual = 0
     </script>
   </body>
 </html>

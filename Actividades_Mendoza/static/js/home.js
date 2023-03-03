@@ -1,7 +1,7 @@
 $( document ).ready(function() {
     console.log( "Documento Cargado!" );
     pinta_filtros_actividades_provincia_mendoza( { "categorias":[] , "lista_municipalidad_localidad":[] } )
-    descarga_actividades_provincia_mendoza();
+    descarga_actividades_provincia_mendoza( pagina_actual );
 });
 
 function descarga_actividades_provincia_mendoza(){
@@ -10,7 +10,7 @@ function descarga_actividades_provincia_mendoza(){
     let filtro_municipalidad = $("#filtro_select_municipalidad").val();
     let filtro_categoria = $("#filtro_select_categoria").val();
     // ---------------------------------------------->>>>>>>>
-    
+    console.log( "Pagina actual: " + pagina_actual )
     $.ajax({
         headers: {'X-CSRFToken': CSRF_TOKEN} ,
         url: url_api_actividades_provincia_mendoza ,
@@ -18,8 +18,8 @@ function descarga_actividades_provincia_mendoza(){
         data:{
             "filtro_municipalidad":filtro_municipalidad,
             "filtro_categoria":filtro_categoria,
-            "actividad_inicial":0,
-            "actividad_final":12
+            "actividad_inicial":pagina_actual*30,
+            "actividad_final":pagina_actual*30+30
             },
         dataType:'JSON',
         success: function( request ){
@@ -46,8 +46,6 @@ function pinta_datos_actividades_provincia_mendoza( json_actividades ){
     lista_divs_historial = []
     
     json_actividades.reverse().forEach( actividad_mendoza => {
-        
-        console.log( actividad_mendoza["titulo"] )
 
         let div_actividad_mendoza = $("#div_actividad_mendoza").clone()
         $(div_actividad_mendoza).attr("hidden",false)
@@ -89,4 +87,13 @@ function pinta_filtros_actividades_provincia_mendoza( request_data ){
     request_data["lista_municipalidad_localidad"].forEach( muni_local_json => {
         $('#filtro_select_municipalidad').append( new Option( muni_local_json["nombre"] , muni_local_json["id"] ) );
     });
+}
+
+function cambiando_de_numero_pagina( numero_pagina ){
+    if (numero_pagina !== pagina_actual){
+        pagina_actual = numero_pagina
+        $("#numero_pagina_actual").text( "Pagina: " + String(pagina_actual) )
+        descarga_actividades_provincia_mendoza()
+        window.scroll( 0, 0)
+    }
 }
