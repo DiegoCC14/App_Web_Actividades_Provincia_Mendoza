@@ -17,11 +17,11 @@ class Actividades_Provincial_Mendoza( View ):
 		
 		#Guardamos dato de que el usuario ingreso --------->>>>
 		if request.user.is_superuser == False:
-			with open('logs_user.csv', mode='r') as archivo_csv:
+			with open(BASE_DIR/'logs_user.csv', mode='r') as archivo_csv:
 				csv_reader = csv.DictReader(archivo_csv)
 				nueva_fila = {'user': 'user_anonimo', 'acceso': datetime.now()}
 				filas = [nueva_fila] + [fila for fila in csv_reader]
-			with open('logs_user.csv', mode='w', newline='') as archivo_csv:
+			with open(BASE_DIR/'logs_user.csv', mode='w', newline='') as archivo_csv:
 				csv_writer = csv.DictWriter(archivo_csv, fieldnames=['user', 'acceso'])
 				csv_writer.writeheader()
 				csv_writer.writerows(filas)
